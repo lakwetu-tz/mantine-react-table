@@ -11,23 +11,27 @@ for file in *; do
     # Change directory to the current file
     cd "$file"
 
-    # Check if the sandbox file exists
-    if [ -f "sandbox/package.json" ]; then
-      echo "  - Found sandbox/package.json"
-      echo "  - Running npm install in sandbox..."
-
+    # Check if the sandbox directory exists
+    if [ -d "sandbox" ]; then
       # Change directory to the sandbox directory
       cd sandbox
 
-      # Run npm install
-      npm install
+      # Check if node_modules directory already exists
+      if [ ! -d "node_modules" ]; then
+        echo "  - Running npm install in sandbox..."
 
-      echo "  - npm install completed"
-      
+        # Run npm install
+        npm install
+
+        echo "  - npm install completed"
+      else
+        echo "  - node_modules directory already exists. Skipping npm install."
+      fi
+
       # Change back to the example directory
       cd ..
     else
-      echo "  - No sandbox/package.json found"
+      echo "  - No sandbox directory found"
     fi
 
     # Change back to the parent directory of the current file
